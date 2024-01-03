@@ -1,12 +1,15 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+
+
 const path = require('path');
+const { Template } = require('webpack');
 
 module.exports = {
   mode: 'development',
   entry: {
-    app: './src/index.js'
+    app: "./src/index.js"
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -16,12 +19,13 @@ module.exports = {
     static: {
       directory: path.join(__dirname, 'public'),
     },
-    hot: false,
-    port: 9000,
     open: true,
+    hot: false,
+    port: 1804,
     devMiddleware: {
       writeToDisk: true,
-    }
+    },
+
   },
   module: {
     rules: [
@@ -33,44 +37,44 @@ module.exports = {
         },
       },
       {
-        test: /\.(sa|sc|c)ss$/,
-        exclude: /custom\.scss$/i,
+        test: /\.(sa|sc|c)ss$/i,
+        exclude: /bootstrap\.scss$/i,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              esModule: false,
-            },
-          }
-           , 
-           "css-loader",
-          "sass-loader"],
-      },
-      {
-        test:  /custom\.scss$/i,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              esModule: false,
+              esModule: false
             },
           },
-          'rtlcss-loader',
-          'sass-loader'
+          "css-loader",
+          "sass-loader"],
+
+      },
+      {
+        test: /bootstrap\.scss$/i,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              esModule: false
+            },
+          },
+          "rtlcss-loader",
+          "sass-loader"
         ]
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
         generator: {
-          filename: "./images/[name][ext]"
+          filename: './images/[name][ext]'
         }
       },
       {
-        test: /\.(svg|eot|woff|woff2|ttf)$/i,
+        test: /\.(ttf|eot|svg|woff|)$/i,
         type: 'asset/resource',
         generator: {
-          filename: "./fonts/[name][ext]"
+          filename: './fonts/[name][ext]'
         }
       },
     ],
@@ -85,12 +89,12 @@ module.exports = {
       template: "./src/product.html"
     }),
     new HtmlWebpackPlugin({
-      filename: "payment.html",
-      template: "./src/payment.html"
-    }),
-    new HtmlWebpackPlugin({
       filename: "checkout.html",
       template: "./src/checkout.html"
+    }),
+    new HtmlWebpackPlugin({
+      filename: "payment.html",
+      template: "./src/payment.html"
     }),
     new HtmlWebpackPlugin({
       filename: "search.html",
@@ -101,8 +105,8 @@ module.exports = {
       template: "./src/contact.html"
     }),
     new MiniCssExtractPlugin({
-      filename: "css/style.css"
+      filename: "css/index.css"
     }),
     new CssMinimizerPlugin()
-  ]
+  ],
 };
